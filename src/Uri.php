@@ -216,9 +216,11 @@ class Uri implements UriInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $scheme
+     *
+     * @return self
      */
-    public function withScheme($scheme)
+    public function setScheme($scheme)
     {
         if (! is_string($scheme)) {
             throw new InvalidArgumentException(sprintf(
@@ -232,19 +234,31 @@ class Uri implements UriInterface
 
         if ($scheme === $this->scheme) {
             // Do nothing if no change was made.
-            return clone $this;
+            return $this;
         }
 
-        $new = clone $this;
-        $new->scheme = $scheme;
+        $this->scheme = $scheme;
 
-        return $new;
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function withUserInfo($user, $password = null)
+    public function withScheme($scheme)
+    {
+        $new = clone $this;
+
+        return $new->setScheme($scheme);
+    }
+
+    /**
+     * @param string      $user
+     * @param null|string $password
+     *
+     * @return self
+     */
+    public function setUserInfo($user, $password = null)
     {
         if (! is_string($user)) {
             throw new InvalidArgumentException(sprintf(
@@ -268,19 +282,30 @@ class Uri implements UriInterface
 
         if ($info === $this->userInfo) {
             // Do nothing if no change was made.
-            return clone $this;
+            return $this;
         }
 
-        $new = clone $this;
-        $new->userInfo = $info;
+        $this->userInfo = $info;
 
-        return $new;
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function withHost($host)
+    public function withUserInfo($user, $password = null)
+    {
+        $new = clone $this;
+
+        return $new->setUserInfo($user, $password);
+    }
+
+    /**
+     * @param string $host
+     *
+     * @return self
+     */
+    public function setHost($host)
     {
         if (! is_string($host)) {
             throw new InvalidArgumentException(sprintf(
@@ -292,19 +317,30 @@ class Uri implements UriInterface
 
         if ($host === $this->host) {
             // Do nothing if no change was made.
-            return clone $this;
+            return $this;
         }
 
-        $new = clone $this;
-        $new->host = $host;
+        $this->host = $host;
 
-        return $new;
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function withPort($port)
+    public function withHost($host)
+    {
+        $new = clone $this;
+
+        return $new->setHost($host);
+    }
+
+    /**
+     * @param null|int $port
+     *
+     * @return self
+     */
+    public function setPort($port)
     {
         if (! is_numeric($port)) {
             throw new InvalidArgumentException(sprintf(
@@ -317,7 +353,7 @@ class Uri implements UriInterface
 
         if ($port === $this->port) {
             // Do nothing if no change was made.
-            return clone $this;
+            return $this;
         }
 
         if ($port < 1 || $port > 65535) {
@@ -327,16 +363,27 @@ class Uri implements UriInterface
             ));
         }
 
-        $new = clone $this;
-        $new->port = $port;
+        $this->port = $port;
 
-        return $new;
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function withPath($path)
+    public function withPort($port)
+    {
+        $new = clone $this;
+
+        return $new->setPort($port);
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return self
+     */
+    public function setPath($path)
     {
         if (! is_string($path)) {
             throw new InvalidArgumentException(
@@ -360,19 +407,30 @@ class Uri implements UriInterface
 
         if ($path === $this->path) {
             // Do nothing if no change was made.
-            return clone $this;
+            return $this;
         }
 
-        $new = clone $this;
-        $new->path = $path;
+        $this->path = $path;
 
-        return $new;
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function withQuery($query)
+    public function withPath($path)
+    {
+        $new = clone $this;
+
+        return $new->setPath($path);
+    }
+
+    /**
+     * @param string $query
+     *
+     * @return self
+     */
+    public function setQuery($query)
     {
         if (! is_string($query)) {
             throw new InvalidArgumentException(
@@ -390,19 +448,30 @@ class Uri implements UriInterface
 
         if ($query === $this->query) {
             // Do nothing if no change was made.
-            return clone $this;
+            return $this;
         }
 
-        $new = clone $this;
-        $new->query = $query;
+        $this->query = $query;
 
-        return $new;
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function withFragment($fragment)
+    public function withQuery($query)
+    {
+        $new = clone $this;
+
+        return $new->setQuery($query);
+    }
+
+    /**
+     * @param string $fragment
+     *
+     * @return self
+     */
+    public function setFragment($fragment)
     {
         if (! is_string($fragment)) {
             throw new InvalidArgumentException(sprintf(
@@ -416,13 +485,22 @@ class Uri implements UriInterface
 
         if ($fragment === $this->fragment) {
             // Do nothing if no change was made.
-            return clone $this;
+            return $this;
         }
 
-        $new = clone $this;
-        $new->fragment = $fragment;
+        $this->fragment = $fragment;
 
-        return $new;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function withFragment($fragment)
+    {
+        $new = clone $this;
+
+        return $new->setFragment($fragment);
     }
 
     /**
