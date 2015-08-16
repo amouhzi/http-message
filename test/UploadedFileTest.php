@@ -7,12 +7,12 @@
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Diactoros;
+namespace HttpMessageTest;
 
 use PHPUnit_Framework_TestCase as TestCase;
 use ReflectionProperty;
-use Zend\Diactoros\Stream;
-use Zend\Diactoros\UploadedFile;
+use HttpMessage\Stream;
+use HttpMessage\UploadedFile;
 
 class UploadedFileTest extends TestCase
 {

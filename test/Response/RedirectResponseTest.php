@@ -7,11 +7,11 @@
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Diactoros\Response;
+namespace HttpMessageTest\Response;
 
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Diactoros\Response\RedirectResponse;
-use Zend\Diactoros\Uri;
+use HttpMessage\Response\RedirectResponse;
+use HttpMessage\Uri;
 
 class RedirectResponseTest extends TestCase
 {

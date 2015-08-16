@@ -7,13 +7,13 @@
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Diactoros\Response;
+namespace HttpMessageTest\Response;
 
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Diactoros\Response;
-use Zend\Diactoros\Response\SapiEmitter;
-use Zend\Diactoros\Stream;
-use ZendTest\Diactoros\TestAsset\HeaderStack;
+use HttpMessage\Response;
+use HttpMessage\Response\SapiEmitter;
+use HttpMessage\Stream;
+use HttpMessageTest\TestAsset\HeaderStack;
 
 class SapiEmitterTest extends TestCase
 {

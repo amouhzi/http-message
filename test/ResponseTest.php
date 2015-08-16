@@ -7,11 +7,11 @@
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Diactoros;
+namespace HttpMessageTest;
 
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Diactoros\Response;
-use Zend\Diactoros\Stream;
+use HttpMessage\Response;
+use HttpMessage\Stream;
 
 class ResponseTest extends TestCase
 {

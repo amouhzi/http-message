@@ -7,13 +7,13 @@
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Diactoros;
+namespace HttpMessageTest;
 
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Diactoros\HeaderSecurity;
+use HttpMessage\HeaderSecurity;
 
 /**
- * Tests for Zend\Diactoros\HeaderSecurity.
+ * Tests for HttpMessage\HeaderSecurity.
  *
  * Tests are largely derived from those for Zend\Http\Header\HeaderValue in
  * Zend Framework, released with the copyright and license below.

@@ -7,7 +7,7 @@
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Diactoros;
+namespace HttpMessage;
 
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;

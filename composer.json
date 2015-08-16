@@ -1,5 +1,5 @@
 {
-  "name": "zendframework/zend-diactoros",
+  "name": "http-message/http-message",
   "description": "PSR HTTP Message implementations",
   "type": "library",
   "license": "BSD-2-Clause",
@@ -8,15 +8,14 @@
     "psr",
     "psr-7"
   ],
-  "homepage": "https://github.com/zendframework/zend-diactoros",
+  "homepage": "https://github.com/amouhzi/http-message",
   "support": {
-    "issues": "https://github.com/zendframework/zend-diactoros/issues",
-    "source": "https://github.com/zendframework/zend-diactoros"
+    "issues": "https://github.com/amouhzi/http-message/issues",
+    "source": "https://github.com/amouhzi/http-message"
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "1.0-dev",
-      "dev-develop": "1.1-dev"
+      "dev-master": "1.0-dev"
     }
   },
   "require": {
@@ -32,12 +31,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Zend\\Diactoros\\": "src/"
+      "HttpMessage\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "ZendTest\\Diactoros\\": "test/"
+      "HttpMessageTest\\": "test/"
     },
     "files": [
       "test/TestAsset/Functions.php",

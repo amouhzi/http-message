@@ -7,12 +7,12 @@
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Diactoros;
+namespace HttpMessageTest;
 
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Diactoros\Request;
-use Zend\Diactoros\Stream;
-use Zend\Diactoros\Uri;
+use HttpMessage\Request;
+use HttpMessage\Stream;
+use HttpMessage\Uri;
 
 class RequestTest extends TestCase
 {
@@ -42,7 +42,7 @@ class RequestTest extends TestCase
     {
         $uri = $this->request->getUri();
         $this->assertInstanceOf('Psr\Http\Message\UriInterface', $uri);
-        $this->assertInstanceOf('Zend\Diactoros\Uri', $uri);
+        $this->assertInstanceOf('HttpMessage\Uri', $uri);
         $this->assertEmpty($uri->getScheme());
         $this->assertEmpty($uri->getUserInfo());
         $this->assertEmpty($uri->getHost());

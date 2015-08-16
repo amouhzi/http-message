@@ -7,15 +7,15 @@
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Diactoros\Response;
+namespace HttpMessage\Response;
 
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use UnexpectedValueException;
-use Zend\Diactoros\AbstractSerializer;
-use Zend\Diactoros\Response;
-use Zend\Diactoros\Stream;
+use HttpMessage\AbstractSerializer;
+use HttpMessage\Response;
+use HttpMessage\Stream;
 
 final class Serializer extends AbstractSerializer
 {

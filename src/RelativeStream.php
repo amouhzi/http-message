@@ -7,7 +7,7 @@
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Diactoros;
+namespace HttpMessage;
 
 use Psr\Http\Message\StreamInterface;
 
@@ -16,7 +16,7 @@ use Psr\Http\Message\StreamInterface;
  *
  * Wrapper for default Stream class, representing subpart (starting from given offset) of initial stream.
  * It can be used to avoid copying full stream, conserving memory.
- * @example see Zend\Diactoros\AbstractSerializer::splitStream()
+ * @example see HttpMessage\AbstractSerializer::splitStream()
  */
 final class RelativeStream implements StreamInterface
 {

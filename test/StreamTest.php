@@ -7,11 +7,11 @@
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Diactoros;
+namespace HttpMessageTest;
 
 use PHPUnit_Framework_TestCase as TestCase;
 use ReflectionProperty;
-use Zend\Diactoros\Stream;
+use HttpMessage\Stream;
 
 class StreamTest extends TestCase
 {
@@ -37,14 +37,14 @@ class StreamTest extends TestCase
 
     public function testCanInstantiateWithStreamIdentifier()
     {
-        $this->assertInstanceOf('Zend\Diactoros\Stream', $this->stream);
+        $this->assertInstanceOf('HttpMessage\Stream', $this->stream);
     }
 
     public function testCanInstantiteWithStreamResource()
     {
         $resource = fopen('php://memory', 'wb+');
         $stream   = new Stream($resource);
-        $this->assertInstanceOf('Zend\Diactoros\Stream', $stream);
+        $this->assertInstanceOf('HttpMessage\Stream', $stream);
     }
 
     public function testIsReadableReturnsFalseIfStreamIsNotReadable()

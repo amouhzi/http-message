@@ -7,10 +7,10 @@
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Diactoros\Response;
+namespace HttpMessage\Response;
 
-use Zend\Diactoros\Response;
-use Zend\Diactoros\Stream;
+use HttpMessage\Response;
+use HttpMessage\Stream;
 
 /**
  * A class representing empty HTTP responses.

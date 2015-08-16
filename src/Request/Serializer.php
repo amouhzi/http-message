@@ -7,16 +7,16 @@
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Diactoros\Request;
+namespace HttpMessage\Request;
 
 use InvalidArgumentException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
 use UnexpectedValueException;
-use Zend\Diactoros\AbstractSerializer;
-use Zend\Diactoros\Request;
-use Zend\Diactoros\Stream;
-use Zend\Diactoros\Uri;
+use HttpMessage\AbstractSerializer;
+use HttpMessage\Request;
+use HttpMessage\Stream;
+use HttpMessage\Uri;
 
 /**
  * Serialize (cast to string) or deserialize (cast string to Request) messages.

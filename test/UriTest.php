@@ -7,10 +7,10 @@
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Diactoros;
+namespace HttpMessageTest;
 
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Diactoros\Uri;
+use HttpMessage\Uri;
 
 class UriTest extends TestCase
 {

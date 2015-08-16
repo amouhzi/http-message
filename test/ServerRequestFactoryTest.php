@@ -7,14 +7,14 @@
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Diactoros;
+namespace HttpMessageTest;
 
 use PHPUnit_Framework_TestCase as TestCase;
 use ReflectionProperty;
-use Zend\Diactoros\ServerRequest;
-use Zend\Diactoros\ServerRequestFactory;
-use Zend\Diactoros\UploadedFile;
-use Zend\Diactoros\Uri;
+use HttpMessage\ServerRequest;
+use HttpMessage\ServerRequestFactory;
+use HttpMessage\UploadedFile;
+use HttpMessage\Uri;
 
 class ServerRequestFactoryTest extends TestCase
 {
@@ -272,7 +272,7 @@ class ServerRequestFactoryTest extends TestCase
         ];
 
         $uri = ServerRequestFactory::marshalUriFromServer($server, $request->getHeaders());
-        $this->assertInstanceOf('Zend\Diactoros\Uri', $uri);
+        $this->assertInstanceOf('HttpMessage\Uri', $uri);
         $this->assertEquals('https', $uri->getScheme());
     }
 
@@ -287,7 +287,7 @@ class ServerRequestFactoryTest extends TestCase
         ];
 
         $uri = ServerRequestFactory::marshalUriFromServer($server, $request->getHeaders());
-        $this->assertInstanceOf('Zend\Diactoros\Uri', $uri);
+        $this->assertInstanceOf('HttpMessage\Uri', $uri);
         $this->assertEquals('http', $uri->getScheme());
     }
 
@@ -301,7 +301,7 @@ class ServerRequestFactoryTest extends TestCase
         $server  = [];
 
         $uri = ServerRequestFactory::marshalUriFromServer($server, $request->getHeaders());
-        $this->assertInstanceOf('Zend\Diactoros\Uri', $uri);
+        $this->assertInstanceOf('HttpMessage\Uri', $uri);
         $this->assertEquals('https', $uri->getScheme());
     }
 
@@ -316,7 +316,7 @@ class ServerRequestFactoryTest extends TestCase
         ];
 
         $uri = ServerRequestFactory::marshalUriFromServer($server, $request->getHeaders());
-        $this->assertInstanceOf('Zend\Diactoros\Uri', $uri);
+        $this->assertInstanceOf('HttpMessage\Uri', $uri);
         $this->assertEquals('/foo/bar', $uri->getPath());
     }
 
@@ -332,7 +332,7 @@ class ServerRequestFactoryTest extends TestCase
         ];
 
         $uri = ServerRequestFactory::marshalUriFromServer($server, $request->getHeaders());
-        $this->assertInstanceOf('Zend\Diactoros\Uri', $uri);
+        $this->assertInstanceOf('HttpMessage\Uri', $uri);
         $this->assertEquals('bar=baz', $uri->getQuery());
     }
 
@@ -366,7 +366,7 @@ class ServerRequestFactoryTest extends TestCase
         ];
 
         $request = ServerRequestFactory::fromGlobals($server, $query, $body, $cookies, $files);
-        $this->assertInstanceOf('Zend\Diactoros\ServerRequest', $request);
+        $this->assertInstanceOf('HttpMessage\ServerRequest', $request);
         $this->assertEquals($cookies, $request->getCookieParams());
         $this->assertEquals($query, $request->getQueryParams());
         $this->assertEquals($body, $request->getParsedBody());
@@ -376,7 +376,7 @@ class ServerRequestFactoryTest extends TestCase
 
     public function testNormalizeServerUsesMixedCaseAuthorizationHeaderFromApacheWhenPresent()
     {
-        $r = new ReflectionProperty('Zend\Diactoros\ServerRequestFactory', 'apacheRequestHeaders');
+        $r = new ReflectionProperty('HttpMessage\ServerRequestFactory', 'apacheRequestHeaders');
         $r->setAccessible(true);
         $r->setValue(function () {
             return ['Authorization' => 'foobar'];
@@ -390,7 +390,7 @@ class ServerRequestFactoryTest extends TestCase
 
     public function testNormalizeServerUsesLowerCaseAuthorizationHeaderFromApacheWhenPresent()
     {
-        $r = new ReflectionProperty('Zend\Diactoros\ServerRequestFactory', 'apacheRequestHeaders');
+        $r = new ReflectionProperty('HttpMessage\ServerRequestFactory', 'apacheRequestHeaders');
         $r->setAccessible(true);
         $r->setValue(function () {
             return ['authorization' => 'foobar'];
@@ -404,7 +404,7 @@ class ServerRequestFactoryTest extends TestCase
 
     public function testNormalizeServerReturnsArrayUnalteredIfApacheHeadersDoNotContainAuthorization()
     {
-        $r = new ReflectionProperty('Zend\Diactoros\ServerRequestFactory', 'apacheRequestHeaders');
+        $r = new ReflectionProperty('HttpMessage\ServerRequestFactory', 'apacheRequestHeaders');
         $r->setAccessible(true);
         $r->setValue(function () {
             return [];

@@ -2,7 +2,7 @@
 
 ## RESOURCES
 
-If you wish to contribute to Zend Framework, please be sure to
+If you wish to contribute to this project, please be sure to
 read/subscribe to the following resources:
 
  -  [Coding Standards](https://github.com/zendframework/zf2/wiki/Coding-Standards)

@@ -7,13 +7,13 @@
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Diactoros;
+namespace HttpMessageTest;
 
 use PHPUnit_Framework_TestCase as TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Server;
-use ZendTest\Diactoros\TestAsset\HeaderStack;
+use HttpMessage\Server;
+use HttpMessageTest\TestAsset\HeaderStack;
 
 class ServerTest extends TestCase
 {
@@ -55,7 +55,7 @@ class ServerTest extends TestCase
             $this->request,
             $this->response
         );
-        $this->assertInstanceOf('Zend\Diactoros\Server', $server);
+        $this->assertInstanceOf('HttpMessage\Server', $server);
         $this->assertSame($this->callback, $server->callback);
         $this->assertSame($this->request, $server->request);
         $this->assertSame($this->response, $server->response);
@@ -67,10 +67,10 @@ class ServerTest extends TestCase
             $this->callback,
             $this->request
         );
-        $this->assertInstanceOf('Zend\Diactoros\Server', $server);
+        $this->assertInstanceOf('HttpMessage\Server', $server);
         $this->assertSame($this->callback, $server->callback);
         $this->assertSame($this->request, $server->request);
-        $this->assertInstanceOf('Zend\Diactoros\Response', $server->response);
+        $this->assertInstanceOf('HttpMessage\Response', $server->response);
     }
 
     public function testCannotAccessArbitraryProperties()
@@ -95,16 +95,16 @@ class ServerTest extends TestCase
             'QUERY_STRING' => 'bar=baz',
         ];
         $server = Server::createServer($this->callback, $server, [], [], [], []);
-        $this->assertInstanceOf('Zend\Diactoros\Server', $server);
+        $this->assertInstanceOf('HttpMessage\Server', $server);
         $this->assertSame($this->callback, $server->callback);
 
-        $this->assertInstanceOf('Zend\Diactoros\ServerRequest', $server->request);
+        $this->assertInstanceOf('HttpMessage\ServerRequest', $server->request);
         $request = $server->request;
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/foo/bar', $request->getUri()->getPath());
         $this->assertTrue($request->hasHeader('Accept'));
 
-        $this->assertInstanceOf('Zend\Diactoros\Response', $server->response);
+        $this->assertInstanceOf('HttpMessage\Response', $server->response);
     }
 
     public function testListenInvokesCallbackAndSendsResponse()
