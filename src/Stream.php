@@ -325,4 +325,30 @@ class Stream implements StreamInterface
 
         $this->resource = $resource;
     }
+
+    /**
+     * Create a memory stream from string.
+     *
+     * @param string $string
+     *
+     * @return StreamInterface
+     * @throws InvalidArgumentException if $html is neither a string or stream.
+     */
+    public static function createFromString($string)
+    {
+        if (!is_string($string)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Invalid content (%s) provided to %s',
+                    (is_object($string) ? get_class($string) : gettype($string)),
+                    __CLASS__
+                )
+            );
+        }
+
+        $stream = new Stream('php://memory', 'wb+');
+        $stream->write($string);
+
+        return $stream;
+    }
 }
