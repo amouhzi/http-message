@@ -12,7 +12,6 @@ namespace HttpMessage\Response;
 use InvalidArgumentException;
 use Psr\Http\Message\UriInterface;
 use HttpMessage\Response;
-use HttpMessage\Stream;
 
 /**
  * Produce a redirect response.
