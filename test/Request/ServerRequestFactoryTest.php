@@ -153,8 +153,8 @@ class ServerRequestFactoryTest extends TestCase
     public function testMarshalHostAndPortUsesHostHeaderWhenPresent()
     {
         $request = new ServerRequest();
-        $request = $request->withUri(new Uri('http://example.com/'));
-        $request = $request->withMethod('GET');
+        $request->setUri(new Uri('http://example.com/'));
+        $request->setMethod('GET');
         $request = $request->withHeader('Host', 'example.com');
 
         $accumulator = (object) ['host' => '', 'port' => null];
@@ -166,8 +166,8 @@ class ServerRequestFactoryTest extends TestCase
     public function testMarshalHostAndPortWillDetectPortInHostHeaderWhenPresent()
     {
         $request = new ServerRequest();
-        $request = $request->withUri(new Uri('http://example.com:8000/'));
-        $request = $request->withMethod('GET');
+        $request->setUri(new Uri('http://example.com:8000/'));
+        $request->setMethod('GET');
         $request = $request->withHeader('Host', 'example.com:8000');
 
         $accumulator = (object) ['host' => '', 'port' => null];
@@ -264,7 +264,7 @@ class ServerRequestFactoryTest extends TestCase
     public function testMarshalUriDetectsHttpsSchemeFromServerValue()
     {
         $request = new ServerRequest();
-        $request = $request->withUri(new Uri('http://example.com/'));
+        $request->setUri(new Uri('http://example.com/'));
         $request = $request->withHeader('Host', 'example.com');
 
         $server  = [
@@ -279,7 +279,7 @@ class ServerRequestFactoryTest extends TestCase
     public function testMarshalUriUsesHttpSchemeIfHttpsServerValueEqualsOff()
     {
         $request = new ServerRequest();
-        $request = $request->withUri(new Uri('http://example.com/'));
+        $request->setUri(new Uri('http://example.com/'));
         $request = $request->withHeader('Host', 'example.com');
 
         $server  = [
@@ -294,8 +294,8 @@ class ServerRequestFactoryTest extends TestCase
     public function testMarshalUriDetectsHttpsSchemeFromXForwardedProtoValue()
     {
         $request = new ServerRequest();
-        $request = $request->withUri(new Uri('http://example.com/'));
-        $request = $request->withHeader('Host', 'example.com');
+        $request->setUri(new Uri('http://example.com/'));
+        $request->setHeader('Host', 'example.com');
         $request = $request->withHeader('X-Forwarded-Proto', 'https');
 
         $server  = [];
@@ -308,7 +308,7 @@ class ServerRequestFactoryTest extends TestCase
     public function testMarshalUriStripsQueryStringFromRequestUri()
     {
         $request = new ServerRequest();
-        $request = $request->withUri(new Uri('http://example.com/'));
+        $request->setUri(new Uri('http://example.com/'));
         $request = $request->withHeader('Host', 'example.com');
 
         $server = [
@@ -323,7 +323,7 @@ class ServerRequestFactoryTest extends TestCase
     public function testMarshalUriInjectsQueryStringFromServer()
     {
         $request = new ServerRequest();
-        $request = $request->withUri(new Uri('http://example.com/'));
+        $request->setUri(new Uri('http://example.com/'));
         $request = $request->withHeader('Host', 'example.com');
 
         $server = [
