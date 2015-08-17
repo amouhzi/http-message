@@ -102,14 +102,26 @@ class ServerRequest extends AbstractRequest implements ServerRequestInterface
     }
 
     /**
+     * @param array $uploadedFiles
+     *
+     * @return self
+     */
+    public function setUploadedFiles(array $uploadedFiles)
+    {
+        $this->validateUploadedFiles($uploadedFiles);
+        $this->uploadedFiles = $uploadedFiles;
+
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function withUploadedFiles(array $uploadedFiles)
     {
-        $this->validateUploadedFiles($uploadedFiles);
         $new = clone $this;
-        $new->uploadedFiles = $uploadedFiles;
-        return $new;
+
+        return $new->setUploadedFiles($uploadedFiles);
     }
 
     /**
@@ -121,13 +133,25 @@ class ServerRequest extends AbstractRequest implements ServerRequestInterface
     }
 
     /**
+     * @param array $cookies
+     *
+     * @return $this
+     */
+    public function setCookieParams(array $cookies)
+    {
+        $this->cookieParams = $cookies;
+
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function withCookieParams(array $cookies)
     {
         $new = clone $this;
-        $new->cookieParams = $cookies;
-        return $new;
+
+        return $new->setCookieParams($cookies);
     }
 
     /**
@@ -139,13 +163,25 @@ class ServerRequest extends AbstractRequest implements ServerRequestInterface
     }
 
     /**
+     * @param array $query
+     *
+     * @return self
+     */
+    public function setQueryParams(array $query)
+    {
+        $this->queryParams = $query;
+
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function withQueryParams(array $query)
     {
         $new = clone $this;
-        $new->queryParams = $query;
-        return $new;
+
+        return $new->setQueryParams($query);
     }
 
     /**
@@ -157,13 +193,25 @@ class ServerRequest extends AbstractRequest implements ServerRequestInterface
     }
 
     /**
+     * @param array|null|object $data
+     *
+     * @return self
+     */
+    public function setParsedBody($data)
+    {
+        $this->parsedBody = $data;
+
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function withParsedBody($data)
     {
         $new = clone $this;
-        $new->parsedBody = $data;
-        return $new;
+
+        return $new->setParsedBody($data);
     }
 
     /**
@@ -187,13 +235,42 @@ class ServerRequest extends AbstractRequest implements ServerRequestInterface
     }
 
     /**
+     * @param string $attribute
+     * @param mixed  $value
+     *
+     * @return self
+     */
+    public function setAttribute($attribute, $value)
+    {
+        $this->attributes[$attribute] = $value;
+
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function withAttribute($attribute, $value)
     {
         $new = clone $this;
-        $new->attributes[$attribute] = $value;
-        return $new;
+
+        return $new->setAttribute($attribute, $value);
+    }
+
+    /**
+     * @param string $attribute
+     *
+     * @return self
+     */
+    public function unsetAttribute($attribute)
+    {
+        if (! isset($this->attributes[$attribute])) {
+            return $this;
+        }
+
+        unset($this->attributes[$attribute]);
+
+        return $this;
     }
 
     /**
@@ -201,13 +278,9 @@ class ServerRequest extends AbstractRequest implements ServerRequestInterface
      */
     public function withoutAttribute($attribute)
     {
-        if (! isset($this->attributes[$attribute])) {
-            return clone $this;
-        }
-
         $new = clone $this;
-        unset($new->attributes[$attribute]);
-        return $new;
+
+        return $new->unsetAttribute($attribute);
     }
 
     /**
@@ -233,6 +306,25 @@ class ServerRequest extends AbstractRequest implements ServerRequestInterface
      * normalizes the method to uppercase to ensure consistency
      * and make checking the method simpler.
      *
+     * @param string $method
+     * @return self
+     */
+    public function setMethod($method)
+    {
+        $this->validateMethod($method);
+
+        $this->method = $method;
+
+        return $this;
+    }
+
+    /**
+     * Set the request method.
+     *
+     * Unlike the regular Request implementation, the server-side
+     * normalizes the method to uppercase to ensure consistency
+     * and make checking the method simpler.
+     *
      * This methods returns a new instance.
      *
      * @param string $method
@@ -240,10 +332,9 @@ class ServerRequest extends AbstractRequest implements ServerRequestInterface
      */
     public function withMethod($method)
     {
-        $this->validateMethod($method);
         $new = clone $this;
-        $new->method = $method;
-        return $new;
+
+        return $new->setMethod($method);
     }
 
     /**
