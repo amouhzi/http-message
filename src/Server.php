@@ -9,9 +9,10 @@
 
 namespace HttpMessage;
 
+use HttpMessage\Request\ServerRequestFactory;
 use OutOfBoundsException;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * "Serve" incoming HTTP requests

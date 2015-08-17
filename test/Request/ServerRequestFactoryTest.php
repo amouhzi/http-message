@@ -7,14 +7,14 @@
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
-namespace HttpMessageTest;
+namespace HttpMessageTest\Request;
 
-use PHPUnit_Framework_TestCase as TestCase;
-use ReflectionProperty;
+use HttpMessage\Request\ServerRequestFactory;
 use HttpMessage\ServerRequest;
-use HttpMessage\ServerRequestFactory;
 use HttpMessage\UploadedFile;
 use HttpMessage\Uri;
+use PHPUnit_Framework_TestCase as TestCase;
+use ReflectionProperty;
 
 class ServerRequestFactoryTest extends TestCase
 {
@@ -376,7 +376,7 @@ class ServerRequestFactoryTest extends TestCase
 
     public function testNormalizeServerUsesMixedCaseAuthorizationHeaderFromApacheWhenPresent()
     {
-        $r = new ReflectionProperty('HttpMessage\ServerRequestFactory', 'apacheRequestHeaders');
+        $r = new ReflectionProperty('HttpMessage\Request\ServerRequestFactory', 'apacheRequestHeaders');
         $r->setAccessible(true);
         $r->setValue(function () {
             return ['Authorization' => 'foobar'];
@@ -390,7 +390,7 @@ class ServerRequestFactoryTest extends TestCase
 
     public function testNormalizeServerUsesLowerCaseAuthorizationHeaderFromApacheWhenPresent()
     {
-        $r = new ReflectionProperty('HttpMessage\ServerRequestFactory', 'apacheRequestHeaders');
+        $r = new ReflectionProperty('HttpMessage\Request\ServerRequestFactory', 'apacheRequestHeaders');
         $r->setAccessible(true);
         $r->setValue(function () {
             return ['authorization' => 'foobar'];
@@ -404,7 +404,7 @@ class ServerRequestFactoryTest extends TestCase
 
     public function testNormalizeServerReturnsArrayUnalteredIfApacheHeadersDoNotContainAuthorization()
     {
-        $r = new ReflectionProperty('HttpMessage\ServerRequestFactory', 'apacheRequestHeaders');
+        $r = new ReflectionProperty('HttpMessage\Request\ServerRequestFactory', 'apacheRequestHeaders');
         $r->setAccessible(true);
         $r->setValue(function () {
             return [];

@@ -7,8 +7,11 @@
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
-namespace HttpMessage;
+namespace HttpMessage\Request;
 
+use HttpMessage\ServerRequest;
+use HttpMessage\UploadedFile;
+use HttpMessage\Uri;
 use InvalidArgumentException;
 use Psr\Http\Message\UploadedFileInterface;
 use stdClass;

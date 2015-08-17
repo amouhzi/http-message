@@ -63,7 +63,7 @@ then populate and send a response.
 ### Marshaling an incoming request
 
 PHP contains a plethora of information about the incoming request, and keeps that information in a
-variety of locations. `HttpMessage\ServerRequestFactory::fromGlobals()` can simplify marshaling
+variety of locations. `HttpMessage\Request\ServerRequestFactory::fromGlobals()` can simplify marshaling
 that information into a request instance.
 
 You can call the factory method with or without the following arguments, in the following order:
@@ -78,7 +78,7 @@ The method will then return a `HttpMessage\ServerRequest` instance. If any argum
 the associated superglobal will be used.
 
 ```php
-$request = HttpMessage\ServerRequestFactory::fromGlobals(
+$request = HttpMessage\Request\ServerRequestFactory::fromGlobals(
     $_SERVER,
     $_GET,
     $_POST,

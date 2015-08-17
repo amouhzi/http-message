@@ -108,7 +108,7 @@ $jsonResponse = StringResponse::html($html, 422, [
 ## ServerRequestFactory
 
 This static class can be used to marshal a `ServerRequest` instance from the PHP environment. The
-primary entry point is `HttpMessage\ServerRequestFactory::fromGlobals(array $server, array
+primary entry point is `HttpMessage\Request\ServerRequestFactory::fromGlobals(array $server, array
 $query, array $body, array $cookies, array $files)`. This method will create a new `ServerRequest`
 instance with the data provided. Examples of usage are:
 
