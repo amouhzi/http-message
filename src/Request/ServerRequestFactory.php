@@ -243,7 +243,7 @@ abstract class ServerRequestFactory
             $scheme = 'https';
         }
         if (! empty($scheme)) {
-            $uri = $uri->withScheme($scheme);
+            $uri->setScheme($scheme);
         }
 
         // Set the host
@@ -252,9 +252,9 @@ abstract class ServerRequestFactory
         $host = $accumulator->host;
         $port = $accumulator->port;
         if (! empty($host)) {
-            $uri = $uri->withHost($host);
+            $uri->setHost($host);
             if (! empty($port)) {
-                $uri = $uri->withPort($port);
+                $uri->setPort($port);
             }
         }
 
@@ -269,8 +269,8 @@ abstract class ServerRequestFactory
         }
 
         return $uri
-            ->withPath($path)
-            ->withQuery($query);
+            ->setPath($path)
+            ->setQuery($query);
     }
 
     /**
