@@ -124,24 +124,20 @@ abstract class AbstractRequest extends AbstractMessage implements RequestInterfa
     }
 
     /**
-     * Create a new instance with a specific request-target.
+     * Set the request-target.
      *
      * If the request needs a non-origin-form request-target — e.g., for
      * specifying an absolute-form, authority-form, or asterisk-form —
      * this method may be used to create an instance with the specified
      * request-target, verbatim.
      *
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return a new instance that has the
-     * changed request target.
-     *
      * @link http://tools.ietf.org/html/rfc7230#section-2.7 (for the various
      *     request-target forms allowed in request messages)
      * @param mixed $requestTarget
-     * @return static
+     * @return self
      * @throws InvalidArgumentException if the request target is invalid.
      */
-    public function withRequestTarget($requestTarget)
+    public function setRequestTarget($requestTarget)
     {
         if (preg_match('#\s#', $requestTarget)) {
             throw new InvalidArgumentException(
@@ -149,9 +145,30 @@ abstract class AbstractRequest extends AbstractMessage implements RequestInterfa
             );
         }
 
+        $this->requestTarget = $requestTarget;
+
+        return $this;
+    }
+
+    /**
+     * Create a new instance with a specific request-target.
+     *
+     * If the request needs a non-origin-form request-target — e.g., for
+     * specifying an absolute-form, authority-form, or asterisk-form —
+     * this method may be used to create an instance with the specified
+     * request-target, verbatim.
+     *
+     * @link http://tools.ietf.org/html/rfc7230#section-2.7 (for the various
+     *     request-target forms allowed in request messages)
+     * @param mixed $requestTarget
+     * @return self
+     * @throws InvalidArgumentException if the request target is invalid.
+     */
+    public function withRequestTarget($requestTarget)
+    {
         $new = clone $this;
-        $new->requestTarget = $requestTarget;
-        return $new;
+
+        return $new->setRequestTarget($requestTarget);
     }
 
     /**
@@ -165,26 +182,41 @@ abstract class AbstractRequest extends AbstractMessage implements RequestInterfa
     }
 
     /**
+     * Set the HTTP method.
+     *
+     * While HTTP method names are typically all uppercase characters, HTTP
+     * method names are case-sensitive and thus implementations SHOULD NOT
+     * modify the given string.
+     *
+     * @param string $method Case-insensitive method.
+     * @return self
+     * @throws InvalidArgumentException for invalid HTTP methods.
+     */
+    public function setMethod($method)
+    {
+        $this->validateMethod($method);
+
+        $this->method = $method;
+
+        return $this;
+    }
+
+    /**
      * Return an instance with the provided HTTP method.
      *
      * While HTTP method names are typically all uppercase characters, HTTP
      * method names are case-sensitive and thus implementations SHOULD NOT
      * modify the given string.
      *
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * changed request method.
-     *
      * @param string $method Case-insensitive method.
-     * @return static
+     * @return self
      * @throws InvalidArgumentException for invalid HTTP methods.
      */
     public function withMethod($method)
     {
-        $this->validateMethod($method);
         $new = clone $this;
-        $new->method = $method;
-        return $new;
+
+        return $new->setMethod($method);
     }
 
     /**
@@ -199,6 +231,50 @@ abstract class AbstractRequest extends AbstractMessage implements RequestInterfa
     public function getUri()
     {
         return $this->uri;
+    }
+
+    /**
+     * Set the URI.
+     *
+     * This method will update the Host header of the returned request by
+     * default if the URI contains a host component. If the URI does not
+     * contain a host component, any pre-existing Host header will be carried
+     * over to the returned request.
+     *
+     * You can opt-in to preserving the original state of the Host header by
+     * setting `$preserveHost` to `true`. When `$preserveHost` is set to
+     * `true`, the returned request will not update the Host header of the
+     * returned message -- even if the message contains no Host header. This
+     * means that a call to `getHeader('Host')` on the original request MUST
+     * equal the return value of a call to `getHeader('Host')` on the returned
+     * request.
+     *
+     * @link http://tools.ietf.org/html/rfc3986#section-4.3
+     * @param UriInterface $uri New request URI to use.
+     * @param bool $preserveHost Preserve the original state of the Host header.
+     * @return self
+     */
+    public function setUri(UriInterface $uri, $preserveHost = false)
+    {
+        $this->uri = $uri;
+
+        if ($preserveHost && $this->hasHeader('Host')) {
+            return $this;
+        }
+
+        if (! $uri->getHost()) {
+            return $this;
+        }
+
+        $host = $uri->getHost();
+        if ($uri->getPort()) {
+            $host .= ':' . $uri->getPort();
+        }
+
+        $this->headerNames['host'] = 'Host';
+        $this->headers['Host'] = [$host];
+
+        return $this;
     }
 
     /**
@@ -217,37 +293,16 @@ abstract class AbstractRequest extends AbstractMessage implements RequestInterfa
      * equal the return value of a call to `getHeader('Host')` on the returned
      * request.
      *
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * new UriInterface instance.
-     *
      * @link http://tools.ietf.org/html/rfc3986#section-4.3
      * @param UriInterface $uri New request URI to use.
      * @param bool $preserveHost Preserve the original state of the Host header.
-     * @return static
+     * @return self
      */
     public function withUri(UriInterface $uri, $preserveHost = false)
     {
         $new = clone $this;
-        $new->uri = $uri;
 
-        if ($preserveHost && $this->hasHeader('Host')) {
-            return $new;
-        }
-
-        if (! $uri->getHost()) {
-            return $new;
-        }
-
-        $host = $uri->getHost();
-        if ($uri->getPort()) {
-            $host .= ':' . $uri->getPort();
-        }
-
-        $new->headerNames['host'] = 'Host';
-        $new->headers['Host'] = [$host];
-
-        return $new;
+        return $new->setUri($uri, $preserveHost);
     }
 
     /**
