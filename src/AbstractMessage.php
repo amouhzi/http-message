@@ -10,6 +10,7 @@
 namespace HttpMessage;
 
 use InvalidArgumentException;
+use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
 
 /**
@@ -17,7 +18,7 @@ use Psr\Http\Message\StreamInterface;
  *
  * @see https://github.com/php-fig/http-message/tree/master/src/MessageInterface.php
  */
-trait MessageTrait
+abstract class AbstractMessage implements MessageInterface
 {
     /**
      * List of all registered headers, as key => array of values.
@@ -41,7 +42,7 @@ trait MessageTrait
     /**
      * @var StreamInterface
      */
-    private $stream;
+    protected $stream;
 
     /**
      * Retrieves the HTTP protocol version as a string.
@@ -329,7 +330,7 @@ trait MessageTrait
      * @param array $originalHeaders Headers to filter.
      * @return array Filtered headers and names.
      */
-    private function filterHeaders(array $originalHeaders)
+    protected function filterHeaders(array $originalHeaders)
     {
         $headerNames = $headers = [];
         foreach ($originalHeaders as $header => $value) {

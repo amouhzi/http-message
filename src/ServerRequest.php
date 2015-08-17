@@ -28,9 +28,9 @@ use Psr\Http\Message\UploadedFileInterface;
  * implemented such that they retain the internal state of the current
  * message and return a new instance that contains the changed state.
  */
-class ServerRequest implements ServerRequestInterface
+class ServerRequest extends AbstractMessage implements ServerRequestInterface
 {
-    use MessageTrait, RequestTrait;
+    use RequestTrait;
 
     /**
      * @var array
