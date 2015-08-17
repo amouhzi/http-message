@@ -57,23 +57,35 @@ abstract class AbstractMessage implements MessageInterface
     }
 
     /**
+     * Set the HTTP protocol version.
+     *
+     * The version string MUST contain only the HTTP version number (e.g.,
+     * "1.1", "1.0").
+     *
+     * @param string $version HTTP protocol version
+     * @return self
+     */
+    public function setProtocolVersion($version)
+    {
+        $this->protocol = $version;
+
+        return $this;
+    }
+
+    /**
      * Return an instance with the specified HTTP protocol version.
      *
      * The version string MUST contain only the HTTP version number (e.g.,
      * "1.1", "1.0").
      *
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * new protocol version.
-     *
      * @param string $version HTTP protocol version
-     * @return static
+     * @return self
      */
     public function withProtocolVersion($version)
     {
         $new = clone $this;
-        $new->protocol = $version;
-        return $new;
+
+        return $new->setProtocolVersion($version);
     }
 
     /**
@@ -172,22 +184,17 @@ abstract class AbstractMessage implements MessageInterface
     }
 
     /**
-     * Return an instance with the provided header, replacing any existing
-     * values of any headers with the same case-insensitive name.
+     * Set the header, replacing any existing values of any headers with the same case-insensitive name.
      *
      * While header names are case-insensitive, the casing of the header will
      * be preserved by this function, and returned from getHeaders().
      *
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * new and/or updated header and value.
-     *
      * @param string $header Case-insensitive header field name.
      * @param string|string[] $value Header value(s).
-     * @return static
+     * @return self
      * @throws \InvalidArgumentException for invalid header names or values.
      */
-    public function withHeader($header, $value)
+    public function setHeader($header, $value)
     {
         if (is_string($value)) {
             $value = [$value];
@@ -204,31 +211,44 @@ abstract class AbstractMessage implements MessageInterface
 
         $normalized = strtolower($header);
 
-        $new = clone $this;
-        $new->headerNames[$normalized] = $header;
-        $new->headers[$header]         = $value;
+        $this->headerNames[$normalized] = $header;
+        $this->headers[$header]         = $value;
 
-        return $new;
+        return $this;
     }
 
     /**
-     * Return an instance with the specified header appended with the
-     * given value.
+     * Return an instance with the provided header, replacing any existing
+     * values of any headers with the same case-insensitive name.
+     *
+     * While header names are case-insensitive, the casing of the header will
+     * be preserved by this function, and returned from getHeaders().
+     *
+     * @param string $header Case-insensitive header field name.
+     * @param string|string[] $value Header value(s).
+     * @return self
+     * @throws \InvalidArgumentException for invalid header names or values.
+     */
+    public function withHeader($header, $value)
+    {
+        $new = clone $this;
+
+        return $new->setHeader($header, $value);
+    }
+
+    /**
+     * Set the header appended with the given value.
      *
      * Existing values for the specified header will be maintained. The new
      * value(s) will be appended to the existing list. If the header did not
      * exist previously, it will be added.
      *
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * new header and/or value.
-     *
      * @param string $header Case-insensitive header field name to add.
      * @param string|string[] $value Header value(s).
-     * @return static
+     * @return self
      * @throws \InvalidArgumentException for invalid header names or values.
      */
-    public function withAddedHeader($header, $value)
+    public function appendHeader($header, $value)
     {
         if (is_string($value)) {
             $value = [ $value ];
@@ -244,15 +264,56 @@ abstract class AbstractMessage implements MessageInterface
         self::assertValidHeaderValue($value);
 
         if (! $this->hasHeader($header)) {
-            return $this->withHeader($header, $value);
+            return $this->setHeader($header, $value);
         }
 
         $normalized = strtolower($header);
         $header     = $this->headerNames[$normalized];
 
+        $this->headers[$header] = array_merge($this->headers[$header], $value);
+
+        return $this;
+    }
+
+    /**
+     * Return an instance with the specified header appended with the
+     * given value.
+     *
+     * Existing values for the specified header will be maintained. The new
+     * value(s) will be appended to the existing list. If the header did not
+     * exist previously, it will be added.
+     *
+     * @param string $header Case-insensitive header field name to add.
+     * @param string|string[] $value Header value(s).
+     * @return self
+     * @throws \InvalidArgumentException for invalid header names or values.
+     */
+    public function withAddedHeader($header, $value)
+    {
         $new = clone $this;
-        $new->headers[$header] = array_merge($this->headers[$header], $value);
-        return $new;
+
+        return $new->appendHeader($header, $value);
+    }
+
+    /**
+     * Unset the specified header.
+     *
+     * Header resolution MUST be done without case-sensitivity.
+     *
+     * @param string $header Case-insensitive header field name to remove.
+     * @return self
+     */
+    public function unsetHeader($header)
+    {
+        if (! $this->hasHeader($header)) {
+            return $this;
+        }
+
+        $normalized = strtolower($header);
+        $original   = $this->headerNames[$normalized];
+
+        unset($this->headers[$original], $this->headerNames[$normalized]);
+        return $this;
     }
 
     /**
@@ -260,25 +321,14 @@ abstract class AbstractMessage implements MessageInterface
      *
      * Header resolution MUST be done without case-sensitivity.
      *
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that removes
-     * the named header.
-     *
      * @param string $header Case-insensitive header field name to remove.
-     * @return static
+     * @return self
      */
     public function withoutHeader($header)
     {
-        if (! $this->hasHeader($header)) {
-            return clone $this;
-        }
-
-        $normalized = strtolower($header);
-        $original   = $this->headerNames[$normalized];
-
         $new = clone $this;
-        unset($new->headers[$original], $new->headerNames[$normalized]);
-        return $new;
+
+        return $new->unsetHeader($header);
     }
 
     /**
@@ -292,23 +342,35 @@ abstract class AbstractMessage implements MessageInterface
     }
 
     /**
+     * Set the message body.
+     *
+     * The body MUST be a StreamInterface object.
+     *
+     * @param StreamInterface $body Body.
+     * @return self
+     * @throws \InvalidArgumentException When the body is not valid.
+     */
+    public function setBody(StreamInterface $body)
+    {
+        $this->stream = $body;
+
+        return $this;
+    }
+
+    /**
      * Return an instance with the specified message body.
      *
      * The body MUST be a StreamInterface object.
      *
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return a new instance that has the
-     * new body stream.
-     *
      * @param StreamInterface $body Body.
-     * @return static
+     * @return self
      * @throws \InvalidArgumentException When the body is not valid.
      */
     public function withBody(StreamInterface $body)
     {
         $new = clone $this;
-        $new->stream = $body;
-        return $new;
+
+        return $new->setBody($body);
     }
 
     /**
